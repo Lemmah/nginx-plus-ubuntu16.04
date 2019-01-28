@@ -1,0 +1,5 @@
+---
+packages:
+  - apt-transport-https
+  - lsb-release
+  - ca-certificates

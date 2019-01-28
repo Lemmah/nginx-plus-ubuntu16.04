@@ -1,0 +1,32 @@
+---
+- name: Create the /etc/ssl/nginx/ dir
+  file:
+    path: /etc/ssl/nginx
+    state: directory
+    recurse: yes
+
+- name: Copy NGINX ssl to /etc/ssl/nginx
+  copy:
+    src: ~/ubuntu/nginx-ssl/
+    dest: /etc/ssl/nginx/
+
+- name: Download NGINX singing key
+  shell: "sudo wget http://nginx.org/keys/nginx_signing.key && sudo apt-key add nginx_signing.key"
+  
+- name: Install apt utils
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: true
+
+- name : Add NGINX Plus Repository
+  shell: "printf \"deb https://plus-pkgs.nginx.com/ubuntu `lsb_release -cs` nginx-plus\n\" | sudo tee /etc/apt/sources.list.d/nginx-plus.list"
+
+- name: Download th apt config to /etc/apt/atp.conf.d
+  shell: "sudo wget -P /etc/apt/apt.conf.d https://cs.nginx.com/static/files/90nginx"
+
+- name: Install NGINX Plus
+  apt:
+    name: nginx-plus
+    state: present
+    update_cache: true

@@ -30,3 +30,4 @@
     name: nginx-plus
     state: present
     update_cache: true
+  notify: Restart NGINX
